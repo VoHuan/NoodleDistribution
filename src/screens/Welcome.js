@@ -30,60 +30,9 @@ const Welcome = (props) => {
     const { navigation, route } = (props)
     // functions of navigate to/back
     const { navigate, goBack } = navigation
-    // const pan = useRef(new Animated.ValueXY()).current;
-
-    // const panResponder = useRef(
-    //     PanResponder.create({
-    //         onMoveShouldSetPanResponder: () => true,
-    //         onPanResponderGrant: () => {
-    //             pan.setOffset({
-    //                 x: (pan.x)._value,
-    //                 y: (pan.y)._value,
-    //             });
-    //         },
-    //         onPanResponderMove: (_, gestureState) => {
-    //             const x = (pan.x)._value;
-    //             if (x > 100) {
-    //                 return;
-    //             }
-
-    //             const right = gestureState.dx > 0;
-    //             if (right) {
-    //                 pan.x.setValue(gestureState.dx);
-    //             }
-    //         },
-    //         onPanResponderRelease: () => {
-    //             const x = (pan.x)._value;
-    //             if (x > 100) {
-    //                 pan.x.setValue(0);
-    //                 pan.y.setValue(0);
-    //                 //takePicture();
-    //                 alert('HomeScreen')
-    //             } else {
-    //                 // Didn't swipe far enough, animate back to origin
-    //                 Animated.spring(pan, {
-    //                     toValue: { x: 0, y: 0 },
-    //                     useNativeDriver: true
-    //                 }).start();
-    //             }
-    //             pan.flattenOffset();
-    //         },
-    //     }),
-    // ).current;
-
-
+    
     const pan = useRef(new Animated.ValueXY()).current;
     const cameraRef = useRef(null);
-
-    // const [scanning, setScanning] = useState(false);
-
-    // onSuccess = e => {
-    //     Linking.openURL(e.data).catch(err =>
-    //         console.error('An error occured', err)
-    //     );
-    // };
-
-
 
     
 

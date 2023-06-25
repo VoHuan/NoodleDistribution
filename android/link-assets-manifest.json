@@ -1,0 +1,17 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "src/assets/fonts/Nunito.ttf",
+      "sha1": "dea5eec0aca2aef62e3bfc625cf95f9d45b59687"
+    },
+    {
+      "path": "src/assets/fonts/PaytoneOne.ttf",
+      "sha1": "5a2d7fbff111eda7dc7023741752f5c6dc3b1b98"
+    },
+    {
+      "path": "src/assets/fonts/SVN.ttf",
+      "sha1": "9f82fa9d9d2a2d4cdc56c79538ecd5c85a83c95f"
+    }
+  ]
+}

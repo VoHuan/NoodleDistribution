@@ -28,7 +28,8 @@ function QRScreen(props) {
         Gender: '',
         Department: '',
         numberNoodle: 0,
-        Image: ''
+        Image: '',
+        doc:''       //document
       });
 
     //navigation
@@ -51,21 +52,29 @@ function QRScreen(props) {
         }
     }
 
+
     const onSuccess = async (e) => {
         if (e.data == null || e.data === undefined || e.data == '') {
             console.log('Cannot detect QR code in image')
         }
-        //console.log(e.data);
+
         const userItem = await fetchUser(e.data); 
-        console.log(userItem);
-        if (userItem.FullName != '') {
-            setUser(userItem)
-            saveUserToAsyncStorage(userItem);
+
+        let userDetail = {
+            FullName: userItem.FullName,
+            BirthDay: userItem.BirthDay,
+            Gender: userItem.Gender,
+            Department: userItem.Department,
+            numberNoodle: userItem.numberNoodle,
+            Image: userItem.Image,
+            doc: e.data,
+        }
+        console.log(userDetail)
+        if (userDetail.FullName != '') {
+            setUser(userDetail)
+            saveUserToAsyncStorage(userDetail);
             navigate('Home')
         }
-        // Linking.openURL(e.data).catch(err =>
-        //     console.error('An error occured', err)
-        // );
     };
 
    
@@ -89,7 +98,7 @@ function QRScreen(props) {
 
     return (
         <QRCodeScanner
-            onRead={onSuccess} // sử dụng onSuccess thay vì this.onSuccess
+            onRead={onSuccess} 
             //flashMode={RNCamera.Constants.FlashMode.torch}
             topContent={
                 <Text style={styles.centerText}>

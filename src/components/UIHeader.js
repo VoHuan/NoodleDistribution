@@ -21,6 +21,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     marginTop: 20,
+   
   },
   logo: {
     width: 85,
@@ -32,11 +33,12 @@ const styles = StyleSheet.create({
   textTitle: {
     fontFamily: 'SVN',
     color: Colors.titleHeader,
-    width: 259,
+    width: 270,
     height: 130,
     alignItems: 'center',
     justifyContent: 'center',
     fontSize: FontSizes.h1,
     textAlign: 'center',
+    
   }
 });

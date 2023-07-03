@@ -2,6 +2,7 @@ import React from "react";
 import  Welcome  from '../screens/Welcome'
 import QRScreen from '../screens/QRScreen'
 import Home  from '../screens/Home'
+import Done  from '../screens/Done'
 import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
@@ -15,6 +16,7 @@ function App(props) {
             <Stack.Screen name={"Welcome"} component={Welcome} />
             <Stack.Screen name={"QRScreen"} component={QRScreen} />
             <Stack.Screen name={"Home"} component={Home} />
+            <Stack.Screen name={"Done"} component={Done} />
 
         </Stack.Navigator>
     </NavigationContainer>

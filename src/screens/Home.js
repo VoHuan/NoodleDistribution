@@ -1,6 +1,5 @@
 import {
   StyleSheet,
-  StatusBar,
   View,
   Image,
   ImageBackground,
@@ -32,6 +31,7 @@ import { StackActions } from '@react-navigation/native';
 import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import App from '../navigation/App'
+import Done from './Done';
 
 import storage from '@react-native-firebase/storage';
 import firebase from '../firebase/firebase'
@@ -41,10 +41,10 @@ import firestore from '@react-native-firebase/firestore';
 
 function Home(props) {
 
-  // //navigation
-  // const { navigation, route } = (props)
-  // // functions of navigate to/back
-  // const { navigate, goBack } = navigation
+  //navigation
+  const { navigation, route } = (props)
+  // functions of navigate to/back
+  const { navigate, goBack } = navigation
 
   const [imageUrl, setImageUrl] = useState(Constants.DEFAULT_USER_IMG); // default image
 
@@ -54,7 +54,7 @@ function Home(props) {
     Gender: '',
     Department: '',
     numberNoodle: 0,
-    Image: '',
+    Image: Constants.DEFAULT_USER_IMG,
     doc: ''
   });
 
@@ -64,6 +64,31 @@ function Home(props) {
   const [selectedNoodle3, setSelectedNoodle3] = useState(false)
 
 
+  const updateNumberNoodleToFirebase = async (userId, newData) => {
+    try {
+      await firestore()
+        .collection('users')
+        .doc(userId)
+        .update(newData);
+      console.log('User updated successfully');
+      return true
+    } catch (error) {
+      console.log('Failed to update user: ', error);
+      return false
+    }
+  }
+
+  const saveUserToAsyncStorage = async (userUpdate) => {
+    try {
+      const jsonValue = JSON.stringify(userUpdate);
+      await AsyncStorage.setItem('user', jsonValue);
+      console.log('User saved to AsyncStorage:1', userUpdate);
+      return true
+    } catch (e) {
+      console.log('Error saving user to AsyncStorage:1', e);
+      return false
+    }
+  };
 
   const getUserFromAsyncStorage = async () => {
     try {
@@ -76,17 +101,29 @@ function Home(props) {
   };
 
   //get user from AsyncStorage
+  const getUser = async () => {
+    const userItem = await getUserFromAsyncStorage();
+    console.log('User from AsyncStorage:', userItem);
+    if (userItem != null) {
+      setUser(userItem);
+    }
+  };
+
+  //update user to AsyncStorage
+  const updateUser = async (user) => {
+    const result = await saveUserToAsyncStorage(user);
+    return result
+  };
+
+
+   //update user to firebase
+   const updateUserToFirebase = async (userId, newData) => {
+    const result = await updateNumberNoodleToFirebase(userId, newData);
+    return result
+  };
+
   useEffect(() => {
-    const getUser = async () => {
-      const userItem = await getUserFromAsyncStorage();
-      console.log('User from AsyncStorage:', userItem);
-      if (userItem != null) {
-        setUser(userItem);
-      }
-    };
-
     getUser();
-
   }, []);
 
 
@@ -98,28 +135,14 @@ function Home(props) {
   }
 
   useEffect(() => {
-    getUrl(user.Image) //get image urlr
+    getUrl(user.Image) //get image url
+    updateUser(user)
+    updateUserToFirebase(user.doc, { numberNoodle: user.numberNoodle })
   }, [user]);
 
 
 
-  // Back to Welcome screen if user click back on phone
-  const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
-    if (route.name === 'Home') {
-      navigation.dispatch(StackActions.popToTop())
-      return true;
-    }
-
-    return false;
-  });
-
-  useEffect(() => {
-    return () => backHandler.remove();
-  }, []);
-
-
-
-  const handleUpdateNumberOfNoodle = (value) => {
+  const handleUpdateNumberOfNoodle = async (value) => {
     setUser(prevState => ({
       ...prevState,
       numberNoodle: value
@@ -177,7 +200,7 @@ function Home(props) {
             }}>
             <Image
               source={
-                user?.numberNoodle > 0
+                user?.numberNoodle > 1
                   ? Constants.NOODLE_MIDDLE
                   : Constants.NOODLE_UNAVAILABLE
               }
@@ -199,7 +222,7 @@ function Home(props) {
             }}>
             <Image
               source={
-                user?.numberNoodle > 0
+                user?.numberNoodle > 2
                   ? Constants.NOODLE_RIGHT
                   : Constants.NOODLE_UNAVAILABLE
               }
@@ -233,32 +256,24 @@ function Home(props) {
 
 
       <View style={{
-        flex: 0.85
+        flex: 0.9
       }}>
         <UIButton
           title={'Get your noodles'}
           onPress={() => {
             if (user.numberNoodle > 0) {
-              let count = 0;
-              if (selectedNoodle1) {
-                count++;
-              }
-              if (selectedNoodle2) {
-                count++;
-              }
-              if (selectedNoodle3) {
-                count++;
-              }
-              if (count > 0) {
-
-                handleUpdateNumberOfNoodle(user.numberNoodle - count)
-                count = 0
-                console.log(user)
-                Alert.alert('DoneScreen');
+              let selectedNoodles = [selectedNoodle1, selectedNoodle2, selectedNoodle3];
+              let selectedCount = selectedNoodles.filter((noodle) => noodle).length;
+              
+              if (selectedCount > 0) {
+                handleUpdateNumberOfNoodle(user.numberNoodle - selectedCount).finally(navigate('Done'));
+                setSelectedNoodle1(false);
+                setSelectedNoodle2(false);
+                setSelectedNoodle3(false);
               } else {
-                Alert.alert('Please select noodles before pressing ');
+                Alert.alert('Please select noodles before pressing');
               }
-            } else if (user.numberNoodle <= 0) {
+            } else {
               Alert.alert('OutOfNoodle');
             }
 

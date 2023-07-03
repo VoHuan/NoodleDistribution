@@ -138,7 +138,7 @@ const Welcome = (props) => {
                         
                     </Animated.View>
                 </View>
-                <Image source={Constants.DOUBLE_ARROW_RIGHT} style={styles.doubleArrowRight} />
+                <Image source={Constants.ARROW_RIGHT} style={styles.doubleArrowRight} />
             </View>
         </View>
     );

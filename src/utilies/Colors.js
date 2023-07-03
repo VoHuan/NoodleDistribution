@@ -11,5 +11,6 @@ export default {
     textInforUser : '#880B0B',
     textNotification : '#980000',
     numberOfCup : '#D91313',
-    PINK : '#9C6666'
+    PINK : '#9C6666',
+    textBottom: '#F8C135'
 }

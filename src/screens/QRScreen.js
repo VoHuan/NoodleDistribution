@@ -59,6 +59,9 @@ function QRScreen(props) {
         }
 
         const userItem = await fetchUser(e.data); 
+        if(userItem == null){
+            console.log('ErrorScreen')
+        }
 
         let userDetail = {
             FullName: userItem.FullName,
@@ -73,7 +76,7 @@ function QRScreen(props) {
         if (userDetail.FullName != '') {
             setUser(userDetail)
             saveUserToAsyncStorage(userDetail);
-            navigate('Home')
+            navigation.replace('Home')
         }
     };
 

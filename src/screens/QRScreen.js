@@ -1,24 +1,11 @@
 import {
-    StyleSheet,
-    StatusBar,
-    View,
-    Image,
-    ImageBackground,
-    Animated,
-    PanResponder,
-    Alert,
-    PermissionsAndroid,
+    StyleSheet,  
     Text,
-    InteractionManager,
-    TouchableOpacity,
-    Linking
 } from 'react-native';
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import QRCodeScanner from 'react-native-qrcode-scanner';
-import firebase from '../firebase/firebase'
 import firestore from '@react-native-firebase/firestore';
-
 
 
 function QRScreen(props) {
@@ -29,7 +16,7 @@ function QRScreen(props) {
         Department: '',
         numberNoodle: 0,
         Image: '',
-        doc:''       //document
+        doc:''       //document of firebase
       });
 
     //navigation
@@ -55,12 +42,12 @@ function QRScreen(props) {
 
     const onSuccess = async (e) => {
         if (e.data == null || e.data === undefined || e.data == '') {
-            console.log('Cannot detect QR code in image')
+            navigation.replace('Error')
         }
 
         const userItem = await fetchUser(e.data); 
         if(userItem == null){
-            console.log('ErrorScreen')
+            navigation.replace('Error')
         }
 
         let userDetail = {

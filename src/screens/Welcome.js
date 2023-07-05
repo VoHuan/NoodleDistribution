@@ -12,7 +12,6 @@ import {
     InteractionManager
 } from 'react-native';
 import React, { useEffect, useRef, useState, useCallback } from 'react';
-import Styles from '../utilies/Styles';
 import Background from '../components/Background';
 import UIHeader from '../components/UIHeader';
 import Colors from '../utilies/Colors';
@@ -30,11 +29,11 @@ const Welcome = (props) => {
     const { navigation, route } = (props)
     // functions of navigate to/back
     const { navigate, goBack } = navigation
-    
+
     const pan = useRef(new Animated.ValueXY()).current;
     const cameraRef = useRef(null);
 
-    
+
 
     // action swipe right to scan
     const panResponder = useRef(
@@ -76,7 +75,7 @@ const Welcome = (props) => {
     // }, [onSwipeRight]);
 
     return (
-        <View style={Styles.container}>
+        <View style={styles.container}>
             <Background />
             <UIHeader title={'Welcome'} />
 
@@ -88,40 +87,36 @@ const Welcome = (props) => {
                     transform: [{ translateX: -142.5 }, { translateY: -85 }],
                     width: 285,
                     height: 170,
+                    alignItems:'center'
                 }}
                 source={Constants.BORDER_VIDEO_ALTA}>
-                <View style={[Styles.alignItemsCenter]}>
+                <View >
                     <Image source={Constants.ALTA_MEDIA_VIDEO} style={styles.altaMediaVideo} />
                 </View>
             </ImageBackground>
 
             <View style={styles.containerBottom}>
                 <View
-                    style={[
-                        Styles.row,
-                        Styles.alignItemsCenter,
-                        Styles.justifyContentCenter,
-                        {
-                            position: 'absolute',
-                            top: '30%',
-                            left: '50%',
-
-                            transform: [{ translateX: -115 }, { translateY: -22.5 }],
-                        },
-                    ]}>
+                    style={{
+                        flexDirection: 'row',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        position: 'absolute',
+                        top: '30%',
+                        left: '50%',
+                        transform: [{ translateX: -115 }, { translateY: -22.5 }],
+                    }}>
                     <Image source={Constants.ICON_SCAN} style={styles.iconScan} />
                     <Text style={styles.bottomTitle}>
                         Follow the arrow to scan card
                     </Text>
                 </View>
                 <View
-                    style={[
-                        Styles.alignItemsCenter,
-                        Styles.justifyContentCenter,
-                        {
-                            width: '100%',
-                        },
-                    ]}>
+                    style={{
+                        justifyContent:'center',
+                        alignItems:'center',
+                        width: '100%',
+                    }}>
 
 
                     <Animated.View
@@ -135,7 +130,7 @@ const Welcome = (props) => {
                         }}
                         {...panResponder.panHandlers}>
                         <Image source={Constants.SCAN_LOGIN} style={styles.scanLogin} />
-                        
+
                     </Animated.View>
                 </View>
                 <Image source={Constants.ARROW_RIGHT} style={styles.doubleArrowRight} />
@@ -147,6 +142,9 @@ const Welcome = (props) => {
 export default Welcome;
 
 const styles = StyleSheet.create({
+    container:{
+        flex: 1
+    },
     altaMediaVideo: {
         width: 265,
         height: 150,
@@ -156,6 +154,7 @@ const styles = StyleSheet.create({
         marginBottom: 5,
         marginLeft: 15.5,
         marginRight: 11.5,
+        
     },
     containerBottom: {
         flex: 1,

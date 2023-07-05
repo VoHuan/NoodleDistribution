@@ -2,6 +2,38 @@
   "migIndex": 1,
   "data": [
     {
+      "path": "src/assets/fonts/MPLUS1p-Black.ttf",
+      "sha1": "8569801e4296beeb737b4f41f6c681671ffe76f2"
+    },
+    {
+      "path": "src/assets/fonts/MPLUS1p-Bold.ttf",
+      "sha1": "f0ea9c43e5867eab539941dd89754826a9a62682"
+    },
+    {
+      "path": "src/assets/fonts/MPLUS1p-ExtraBold.ttf",
+      "sha1": "0aa6ee65e0b05ad43b8fcfb8cb9456b79d44b481"
+    },
+    {
+      "path": "src/assets/fonts/MPLUS1p-Light.ttf",
+      "sha1": "45f137aa89a51f73cbedec5fac15f8f5f76ccd27"
+    },
+    {
+      "path": "src/assets/fonts/MPLUS1p-Medium.ttf",
+      "sha1": "0bd0c4d7a8015630e944ce52199060ab58654905"
+    },
+    {
+      "path": "src/assets/fonts/MPLUS1p-Regular.ttf",
+      "sha1": "6ed141527b7a670cfb2cde638eda94fa4c4a83e4"
+    },
+    {
+      "path": "src/assets/fonts/MPLUS1p-Thin.ttf",
+      "sha1": "5109047384658572eca393af6682e0f7c4cc02d5"
+    },
+    {
+      "path": "src/assets/fonts/Nunito-ExtraBold.ttf",
+      "sha1": "60821838f6675153f0699c6a86ad8467a937e0f5"
+    },
+    {
       "path": "src/assets/fonts/Nunito.ttf",
       "sha1": "dea5eec0aca2aef62e3bfc625cf95f9d45b59687"
     },

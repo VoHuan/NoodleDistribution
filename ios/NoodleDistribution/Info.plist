@@ -56,6 +56,14 @@
 		<string>SVN.ttf</string>
 		<string>Nunito.ttf</string>
 		<string>PaytoneOne.ttf</string>
+		<string>MPLUS1p-Black.ttf</string>
+		<string>MPLUS1p-Bold.ttf</string>
+		<string>MPLUS1p-ExtraBold.ttf</string>
+		<string>MPLUS1p-Light.ttf</string>
+		<string>MPLUS1p-Medium.ttf</string>
+		<string>MPLUS1p-Regular.ttf</string>
+		<string>MPLUS1p-Thin.ttf</string>
+		<string>Nunito-ExtraBold.ttf</string>
 	</array>
 </dict>
 </plist>

@@ -1,40 +1,15 @@
 import {
     StyleSheet,
     View,
-    Image,
-    ImageBackground,
-    Animated,
-    PanResponder,
-    Alert,
-    PermissionsAndroid,
+    Image,  
     Text,
-    InteractionManager,
-    BackHandler,
-    TouchableOpacity
 } from 'react-native';
-import React, { useEffect, useRef, useState, useCallback } from 'react';
-import Styles from '../utilies/Styles';
+import React from 'react';
 import Background from '../components/Background';
-import UserInformation from '../components/UserInformation';
 import UIHeader from '../components/UIHeader';
 import UIButton from '../components/UIButton';
 import Colors from '../utilies/Colors';
 import Constants from '../utilies/Constants';
-import RNQRGenerator from 'rn-qr-generator';
-import * as ImagePicker from 'react-native-image-picker';
-import FontSizes from '../utilies/FontSizes';
-import { RNCamera } from 'react-native-camera';
-import QRCodeScanner from 'react-native-qrcode-scanner';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { StackActions } from '@react-navigation/native';
-
-import { NavigationContainer } from '@react-navigation/native'
-import { createNativeStackNavigator } from '@react-navigation/native-stack'
-import App from '../navigation/App'
-
-import storage from '@react-native-firebase/storage';
-import firebase from '../firebase/firebase'
-import firestore from '@react-native-firebase/firestore';
 
 
 
@@ -131,7 +106,7 @@ const styles = StyleSheet.create({
     },
     bottomText: {
         color: Colors.textBottom,
-        fontFamily: 'PaytoneOne',
+        fontFamily: 'MPLUS1p-Bold',
         fontSize: 18,
         paddingTop:15,
         paddingBottom: 3,

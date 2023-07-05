@@ -7,7 +7,7 @@ export default {
   ICON_SCAN: require('../assets/icon_scan.png'),
   ARROW_RIGHT: require('../assets/arrow_right.png'),
   ERROR_CARD: require('../assets/error_card.png'),
-  OUT_NOODLES_CUP: require('../assets/out_noodles.png'),
+  OUT_OF_NOODLES: require('../assets/out_of_noodles.png'),
   ARROW_DOWN: require('../assets/arrow_down.png'), 
   BORDER_VIDEO_ALTA : require('../assets/border_video_alt.png'), 
   SCAN_LOGIN: require('../assets/scan_area.png'),
@@ -19,4 +19,5 @@ export default {
   NOODLE_UNAVAILABLE : require('../assets/noodleUnavailable.png'),
   IS_SELECTED: require('../assets/isSelected.png'),
   HEART_ICON :  require('../assets/heart_icon.png'),
+  BACKGROUND_TEXT :  require('../assets/background_text.png'),
 }

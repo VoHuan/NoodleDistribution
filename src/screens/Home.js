@@ -2,39 +2,21 @@ import {
   StyleSheet,
   View,
   Image,
-  ImageBackground,
-  Animated,
-  PanResponder,
   Alert,
-  PermissionsAndroid,
   Text,
-  InteractionManager,
-  BackHandler,
   TouchableOpacity
 } from 'react-native';
 import React, { useEffect, useRef, useState, useCallback } from 'react';
-import Styles from '../utilies/Styles';
 import Background from '../components/Background';
 import UserInformation from '../components/UserInformation';
 import UIHeader from '../components/UIHeader';
 import UIButton from '../components/UIButton';
 import Colors from '../utilies/Colors';
 import Constants from '../utilies/Constants';
-import RNQRGenerator from 'rn-qr-generator';
-import * as ImagePicker from 'react-native-image-picker';
 import FontSizes from '../utilies/FontSizes';
-import { RNCamera } from 'react-native-camera';
-import QRCodeScanner from 'react-native-qrcode-scanner';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { StackActions } from '@react-navigation/native';
-
-import { NavigationContainer } from '@react-navigation/native'
-import { createNativeStackNavigator } from '@react-navigation/native-stack'
-import App from '../navigation/App'
-import Done from './Done';
 
 import storage from '@react-native-firebase/storage';
-import firebase from '../firebase/firebase'
 import firestore from '@react-native-firebase/firestore';
 
 
@@ -274,7 +256,7 @@ function Home(props) {
                 Alert.alert('Please select noodles before pressing');
               }
             } else {
-              Alert.alert('OutOfNoodle');
+              navigate('OutOfNoodle')
             }
 
           }}

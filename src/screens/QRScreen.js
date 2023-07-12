@@ -1,94 +1,72 @@
 import {
-    StyleSheet,  
+    StyleSheet,
     Text,
 } from 'react-native';
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import QRCodeScanner from 'react-native-qrcode-scanner';
-import firestore from '@react-native-firebase/firestore';
+
+import { fetchUser } from '../features/user/userSlice';
+import { useDispatch, useSelector } from 'react-redux';
+
+import {saveUserToAsyncStorage} from '../AsyncStorage/User'
+
+
 
 
 function QRScreen(props) {
-    const [user, setUser] = useState({
-        FullName: '',
-        BirthDay: '',
-        Gender: '',
-        Department: '',
-        numberNoodle: 0,
-        Image: '',
-        doc:''       //document of firebase
-      });
 
+    const dispatch = useDispatch();
+    const user = useSelector((state) => state.user);
+
+   
     //navigation
     const { navigation, route } = (props)
     // functions of navigate to/back
     const { navigate, goBack } = navigation
 
-    const fetchUser = async (message) => {
-        try {
-            const userDocument = await firestore()
-                .collection('users')
-                .doc(message)
-                .get();
+ 
 
-            const data = userDocument.exists ? userDocument.data() : null;
-            return data;
-        } catch (error) {
-            console.log(error);
-            return null; 
-        }
-    }
+    const handleFetchUser = async (doc) => {
+         dispatch(fetchUser(doc));
+    };
 
 
     const onSuccess = async (e) => {
         if (e.data == null || e.data === undefined || e.data == '') {
             navigation.replace('Error')
         }
+        else {
+            console.log(e.data)
+            await handleFetchUser(e.data)
+        }
 
-        const userItem = await fetchUser(e.data); 
-        if(userItem == null){
+        if (user.status === "failed") {
             navigation.replace('Error')
         }
-
-        let userDetail = {
-            FullName: userItem.FullName,
-            BirthDay: userItem.BirthDay,
-            Gender: userItem.Gender,
-            Department: userItem.Department,
-            numberNoodle: userItem.numberNoodle,
-            Image: userItem.Image,
-            doc: e.data,
-        }
-        console.log(userDetail)
-        if (userDetail.FullName != '') {
-            setUser(userDetail)
-            saveUserToAsyncStorage(userDetail);
+        
+        if (user.status === "succeeded") {
             navigation.replace('Home')
         }
     };
 
-   
-    const saveUserToAsyncStorage = async (user) => {
-        try {
-            const jsonValue = JSON.stringify(user);
-            await AsyncStorage.setItem('user', jsonValue);
-            console.log('User saved to AsyncStorage:', user);
-        } catch (e) {
-            console.log('Error saving user to AsyncStorage:', e);
+    useEffect(() => {
+        if(user.user != null && user.user != undefined ){
+            saveUserToAsyncStorage(user.user);
         }
-    };
-    // useEffect(() => {
-         
-    //     if ( user.FullName != ''){
-    //         console.log(user)
-    //         navigate('Home')
-    //     }
+        if (user.status === "failed") {
+            navigation.replace('Error')
+        }
         
-    // }, [user]);
+        if (user.status === "succeeded") {
+            navigation.replace('Home')
+        }
+        
+    }, [user]);
 
     return (
         <QRCodeScanner
-            onRead={onSuccess} 
+            onRead={onSuccess}
             //flashMode={RNCamera.Constants.FlashMode.torch}
             topContent={
                 <Text style={styles.centerText}>

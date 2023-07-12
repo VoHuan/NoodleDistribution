@@ -16,120 +16,39 @@ import Constants from '../utilies/Constants';
 import FontSizes from '../utilies/FontSizes';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import storage from '@react-native-firebase/storage';
-import firestore from '@react-native-firebase/firestore';
+import { updateNumberNoodleToFirebase } from '../features/user/userSlice'
+import { fetchUser } from '../features/user/userSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
+import {getUserFromAsyncStorage} from '../AsyncStorage/User'
 
 
 function Home(props) {
+
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user.user);
 
   //navigation
   const { navigation, route } = (props)
   // functions of navigate to/back
   const { navigate, goBack } = navigation
 
-  const [imageUrl, setImageUrl] = useState(Constants.DEFAULT_USER_IMG); // default image
-
-  const [user, setUser] = useState({
-    FullName: '',
-    BirthDay: '',
-    Gender: '',
-    Department: '',
-    numberNoodle: 0,
-    Image: Constants.DEFAULT_USER_IMG,
-    doc: ''
-  });
-
-
   const [selectedNoodle1, setSelectedNoodle1] = useState(false)
   const [selectedNoodle2, setSelectedNoodle2] = useState(false)
   const [selectedNoodle3, setSelectedNoodle3] = useState(false)
 
-
-  const updateNumberNoodleToFirebase = async (userId, newData) => {
-    try {
-      await firestore()
-        .collection('users')
-        .doc(userId)
-        .update(newData);
-      console.log('User updated successfully');
-      return true
-    } catch (error) {
-      console.log('Failed to update user: ', error);
-      return false
-    }
-  }
-
-  const saveUserToAsyncStorage = async (userUpdate) => {
-    try {
-      const jsonValue = JSON.stringify(userUpdate);
-      await AsyncStorage.setItem('user', jsonValue);
-      console.log('User saved to AsyncStorage:1', userUpdate);
-      return true
-    } catch (e) {
-      console.log('Error saving user to AsyncStorage:1', e);
-      return false
-    }
+  const handleUpdateNumberNoodle = async ( doc, newData ) => {
+    dispatch(updateNumberNoodleToFirebase({ userId: doc, newData: newData }));
   };
 
-  const getUserFromAsyncStorage = async () => {
-    try {
-      const jsonValue = await AsyncStorage.getItem('user');
-      return jsonValue != null ? JSON.parse(jsonValue) : null;
-    } catch (e) {
-      console.log('Error getting user from AsyncStorage:', e);
-      return null;
-    }
+  const handleFetchUser = async (doc) => {
+    dispatch(fetchUser(doc));
   };
 
-  //get user from AsyncStorage
-  const getUser = async () => {
-    const userItem = await getUserFromAsyncStorage();
-    console.log('User from AsyncStorage:', userItem);
-    if (userItem != null) {
-      setUser(userItem);
-    }
-  };
-
-  //update user to AsyncStorage
-  const updateUser = async (user) => {
-    const result = await saveUserToAsyncStorage(user);
-    return result
-  };
-
-
-   //update user to firebase
-   const updateUserToFirebase = async (userId, newData) => {
-    const result = await updateNumberNoodleToFirebase(userId, newData);
-    return result
-  };
-
-  useEffect(() => {
-    getUser();
+  useEffect(() => {  
+    handleFetchUser(user.document) 
   }, []);
 
-
-  //get image url from user
-  const getUrl = async (imageFileName) => {
-    const url = await storage().ref('images/' + imageFileName).getDownloadURL();
-    console.log(url)
-    setImageUrl(url)
-  }
-
-  useEffect(() => {
-    getUrl(user.Image) //get image url
-    updateUser(user)
-    updateUserToFirebase(user.doc, { numberNoodle: user.numberNoodle })
-  }, [user]);
-
-
-
-  const handleUpdateNumberOfNoodle = async (value) => {
-    setUser(prevState => ({
-      ...prevState,
-      numberNoodle: value
-    }));
-  }
 
   return (
     <View style={styles.container}>
@@ -139,7 +58,7 @@ function Home(props) {
       <View style={{ flex: 1, paddingHorizontal: 20 }}>
         <View>
           <UserInformation
-            image={imageUrl.toString()}
+            image={user?.Image}
             fullName={user?.FullName}
             birthDay={user?.BirthDay}
             gender={user?.Gender}
@@ -243,12 +162,17 @@ function Home(props) {
         <UIButton
           title={'Get your noodles'}
           onPress={() => {
-            if (user.numberNoodle > 0) {
+            if (user?.numberNoodle > 0) {
               let selectedNoodles = [selectedNoodle1, selectedNoodle2, selectedNoodle3];
               let selectedCount = selectedNoodles.filter((noodle) => noodle).length;
-              
+
               if (selectedCount > 0) {
-                handleUpdateNumberOfNoodle(user.numberNoodle - selectedCount).finally(navigate('Done'));
+                let userId = user.document   // userId = document in firestore database
+                let dataUpdate = user.numberNoodle - selectedCount  // new number noodle
+                 handleUpdateNumberNoodle(userId, dataUpdate)
+                        .then(handleFetchUser(user.document))  // reload number of noodle on Home Screen
+                        .finally(navigate('Done'));  // navigate to Done Screen
+
                 setSelectedNoodle1(false);
                 setSelectedNoodle2(false);
                 setSelectedNoodle3(false);

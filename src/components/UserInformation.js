@@ -1,6 +1,5 @@
 import { StyleSheet, View, Image, Text, ImageBackground } from 'react-native';
 import React from 'react';
-import Styles from '../utilies/Styles';
 import FontSizes from '../utilies/FontSizes';
 import Colors from '../utilies/Colors';
 import Constants from '../utilies/Constants';
@@ -30,7 +29,7 @@ const UserInformation = (props) => {
             style={styles.avatar}
             source={{ uri: image  }} />
         </View>
-        <View style={[Styles.row]}>
+        <View style={{flexDirection:'row'}}>
           <View>
             <Text
               style={styles.infomationTitle}>

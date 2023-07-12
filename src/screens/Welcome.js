@@ -1,13 +1,10 @@
 import {
     StyleSheet,
-    StatusBar,
     View,
     Image,
     ImageBackground,
     Animated,
     PanResponder,
-    Alert,
-    PermissionsAndroid,
     Text,
     InteractionManager
 } from 'react-native';
@@ -16,11 +13,9 @@ import Background from '../components/Background';
 import UIHeader from '../components/UIHeader';
 import Colors from '../utilies/Colors';
 import Constants from '../utilies/Constants';
-import RNQRGenerator from 'rn-qr-generator';
-import * as ImagePicker from 'react-native-image-picker';
 import FontSizes from '../utilies/FontSizes';
-import { RNCamera } from 'react-native-camera';
-import QRCodeScanner from 'react-native-qrcode-scanner';
+
+import {getUserFromAsyncStorage} from '../AsyncStorage/User'
 
 
 const Welcome = (props) => {
@@ -31,10 +26,8 @@ const Welcome = (props) => {
     const { navigate, goBack } = navigation
 
     const pan = useRef(new Animated.ValueXY()).current;
-    const cameraRef = useRef(null);
 
-
-
+      
     // action swipe right to scan
     const panResponder = useRef(
         PanResponder.create({
@@ -48,14 +41,15 @@ const Welcome = (props) => {
                         duration: 200,
                         useNativeDriver: true
                     }).start(() => {
-                        InteractionManager.runAfterInteractions(() => {
+                        InteractionManager.runAfterInteractions( () => {
+                            // change screen after swiping button                      
                             navigate('QRScreen')
                             // Animate back to origin
                             Animated.timing(pan, {
                                 toValue: { x: 0, y: 0 },
                                 duration: 200,
                                 useNativeDriver: true,
-                                delay: 2000 // Wait for 500ms before animating
+                                delay: 2000 // Wait for 200ms before animating
                             }).start()
                         });
                     });

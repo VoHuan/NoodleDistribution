@@ -65,6 +65,7 @@ function Done(props) {
                 <UIButton
                     title={'Back to home'}
                     onPress={() => {
+                        //navigation.replace('Home')
                         goBack()
                     }}
                 />

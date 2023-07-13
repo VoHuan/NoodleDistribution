@@ -9,7 +9,7 @@ import QRCodeScanner from 'react-native-qrcode-scanner';
 import { fetchUser } from '../features/user/userSlice';
 import { useDispatch, useSelector } from 'react-redux';
 
-import {saveUserToAsyncStorage} from '../AsyncStorage/User'
+import { saveUserToAsyncStorage } from '../AsyncStorage/User'
 
 
 
@@ -18,50 +18,46 @@ function QRScreen(props) {
 
     const dispatch = useDispatch();
     const user = useSelector((state) => state.user);
+    const [isFirstRender, setIsFirstRender] = useState(true);
 
-   
+
     //navigation
     const { navigation, route } = (props)
     // functions of navigate to/back
     const { navigate, goBack } = navigation
 
- 
+
 
     const handleFetchUser = async (doc) => {
-         dispatch(fetchUser(doc));
+        dispatch(fetchUser(doc));
     };
 
 
+    const checkLogin = async () => {
+
+        if (user.user == null && user.status != "idle" && user.status != "loading") {
+            navigation.replace('Error')
+        }
+
+        if (user.status == "succeeded" && user.user != null) {
+
+            if (user.user != null && user.user != undefined) {
+                saveUserToAsyncStorage(user.user);
+            }
+            navigation.replace('Home')
+        }
+    }
     const onSuccess = async (e) => {
-        if (e.data == null || e.data === undefined || e.data == '') {
+        if (e.data == null || e.data == undefined || e.data == '') {
             navigation.replace('Error')
         }
         else {
-            console.log(e.data)
             await handleFetchUser(e.data)
-        }
-
-        if (user.status === "failed") {
-            navigation.replace('Error')
-        }
-        
-        if (user.status === "succeeded") {
-            navigation.replace('Home')
         }
     };
 
     useEffect(() => {
-        if(user.user != null && user.user != undefined ){
-            saveUserToAsyncStorage(user.user);
-        }
-        if (user.status === "failed") {
-            navigation.replace('Error')
-        }
-        
-        if (user.status === "succeeded") {
-            navigation.replace('Home')
-        }
-        
+        checkLogin()
     }, [user]);
 
     return (

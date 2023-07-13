@@ -5,7 +5,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import storage from '@react-native-firebase/storage';
 import firestore from '@react-native-firebase/firestore';
 
-
+// function update number of noodle to firebase
 export const updateNumberNoodleToFirebase = createAsyncThunk(
     'user/updateNumberNoodleToFirebase',
     async ({ userId, newData }) => {
@@ -23,7 +23,7 @@ export const updateNumberNoodleToFirebase = createAsyncThunk(
     }
 );
 
-
+// function get user from firebase
 export const fetchUser = createAsyncThunk(
     'user/fetchUser',
     async (message) => {
@@ -54,7 +54,10 @@ const userSlice = createSlice({
         error: null,
     },
     reducers: {
-
+        setUser : (state) =>{
+            state.user = null
+            state.status = 'idle'
+        }
     },
     extraReducers: (builder) => {
         builder
@@ -78,6 +81,7 @@ const userSlice = createSlice({
             .addCase(fetchUser.fulfilled, (state, action) => {
                 state.status = 'succeeded';
                 state.user = action.payload;
+               // console.log(state.user)
             })
             .addCase(fetchUser.rejected, (state, action) => {
                 state.status = 'failed';
@@ -86,5 +90,5 @@ const userSlice = createSlice({
     },
 });
 
-
+export const {setUser} = userSlice.actions
 export default userSlice.reducer;

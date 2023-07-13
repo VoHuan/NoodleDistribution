@@ -15,6 +15,9 @@ import Colors from '../utilies/Colors';
 import Constants from '../utilies/Constants';
 import FontSizes from '../utilies/FontSizes';
 
+import { useDispatch, useSelector } from 'react-redux';
+import { setUser } from '../features/user/userSlice';
+
 
 const Error = (props) => {
 
@@ -25,6 +28,10 @@ const Error = (props) => {
 
     const pan = useRef(new Animated.ValueXY()).current;
     //const cameraRef = useRef(null);
+
+    const user = useSelector((state) => state.user);
+    const dispatch = useDispatch();
+    
 
 
 
@@ -42,7 +49,10 @@ const Error = (props) => {
                         useNativeDriver: true
                     }).start(() => {
                         InteractionManager.runAfterInteractions(() => {
-                            navigate('QRScreen')
+
+                            dispatch(setUser()) // reset status and value of user if scan error
+                            navigate('QRScreen') // navigate to QRScreen
+
                             // Animate back to origin
                             Animated.timing(pan, {
                                 toValue: { x: 0, y: 0 },

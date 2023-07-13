@@ -45,8 +45,35 @@ function Home(props) {
     dispatch(fetchUser(doc));
   };
 
-  useEffect(() => {  
-    handleFetchUser(user.document) 
+  async function handleGetYourNoodles() {
+    if (user?.numberNoodle > 0) {
+      let selectedNoodles = [selectedNoodle1, selectedNoodle2, selectedNoodle3];
+      let selectedCount = selectedNoodles.filter((noodle) => noodle).length;
+  
+      if (selectedCount > 0) {
+        let userId = user.document; // userId = document in firestore database
+        let dataUpdate = user.numberNoodle - selectedCount; // new number noodle
+        try {
+          await handleUpdateNumberNoodle(userId, dataUpdate);
+          await handleFetchUser(userId); // reload number of noodle on Home Screen
+          navigate('Done');
+        } catch (error) {
+          console.error('Failed to update number noodle:', error);
+          Alert.alert('Failed to update number noodle. Please try again later.');
+        }
+        setSelectedNoodle1(false);
+        setSelectedNoodle2(false);
+        setSelectedNoodle3(false);
+      } else {
+        Alert.alert('Please select noodles before pressing');
+      }
+    } else {
+      navigate('OutOfNoodle');
+    }
+  }
+
+  useEffect(() => {   
+      handleFetchUser(user.document)  
   }, []);
 
 
@@ -162,27 +189,7 @@ function Home(props) {
         <UIButton
           title={'Get your noodles'}
           onPress={() => {
-            if (user?.numberNoodle > 0) {
-              let selectedNoodles = [selectedNoodle1, selectedNoodle2, selectedNoodle3];
-              let selectedCount = selectedNoodles.filter((noodle) => noodle).length;
-
-              if (selectedCount > 0) {
-                let userId = user.document   // userId = document in firestore database
-                let dataUpdate = user.numberNoodle - selectedCount  // new number noodle
-                 handleUpdateNumberNoodle(userId, dataUpdate)
-                        .then(handleFetchUser(user.document))  // reload number of noodle on Home Screen
-                        .finally(navigate('Done'));  // navigate to Done Screen
-
-                setSelectedNoodle1(false);
-                setSelectedNoodle2(false);
-                setSelectedNoodle3(false);
-              } else {
-                Alert.alert('Please select noodles before pressing');
-              }
-            } else {
-              navigate('OutOfNoodle')
-            }
-
+            handleGetYourNoodles()
           }}
         />
       </View>

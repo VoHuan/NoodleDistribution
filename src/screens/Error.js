@@ -27,8 +27,7 @@ const Error = (props) => {
     const { navigate, goBack } = navigation
 
     const pan = useRef(new Animated.ValueXY()).current;
-    //const cameraRef = useRef(null);
-
+    
     const user = useSelector((state) => state.user);
     const dispatch = useDispatch();
     

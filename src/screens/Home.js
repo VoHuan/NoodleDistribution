@@ -48,19 +48,20 @@ function Home(props) {
   async function handleGetYourNoodles() {
     if (user?.numberNoodle > 0) {
       let selectedNoodles = [selectedNoodle1, selectedNoodle2, selectedNoodle3];
-      let selectedCount = selectedNoodles.filter((noodle) => noodle).length;
+      let selectedCount = selectedNoodles.filter((noodle) => noodle).length; // count noodles is selected
   
       if (selectedCount > 0) {
         let userId = user.document; // userId = document in firestore database
         let dataUpdate = user.numberNoodle - selectedCount; // new number noodle
         try {
-          await handleUpdateNumberNoodle(userId, dataUpdate);
+          await handleUpdateNumberNoodle(userId, dataUpdate); // update number of noodle
           await handleFetchUser(userId); // reload number of noodle on Home Screen
           navigate('Done');
         } catch (error) {
           console.error('Failed to update number noodle:', error);
           Alert.alert('Failed to update number noodle. Please try again later.');
         }
+        // reset select after click
         setSelectedNoodle1(false);
         setSelectedNoodle2(false);
         setSelectedNoodle3(false);

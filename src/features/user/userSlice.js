@@ -15,10 +15,8 @@ export const updateNumberNoodleToFirebase = createAsyncThunk(
                 .doc(userId)
                 .update({numberNoodle: newData,});
             console.log('User updated successfully');
-            //return true
         } catch (error) {
             console.log('Failed to update user: ', error);
-            //return false
         }
     }
 );
@@ -61,19 +59,6 @@ const userSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
-            // .addCase(updateNumberNoodleToFirebase.pending, state => {
-            //     state.status = 'loading';
-            //     state.error = null;
-            // })
-            // .addCase(updateNumberNoodleToFirebase.fulfilled, (state, action) => {
-            //     state.status = 'succeeded';
-            //     //state.user = action.payload;
-            // })
-            // .addCase(updateNumberNoodleToFirebase.rejected, (state, action) => {
-            //     state.status = 'failed';
-            //     state.error = action.error.message ?? 'Faile to update ';
-            // })
-
             .addCase(fetchUser.pending, state => {
                 state.status = 'loading';
                 state.error = null;

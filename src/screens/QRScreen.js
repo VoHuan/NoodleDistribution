@@ -18,8 +18,7 @@ function QRScreen(props) {
 
     const dispatch = useDispatch();
     const user = useSelector((state) => state.user);
-    const [isFirstRender, setIsFirstRender] = useState(true);
-
+    
 
     //navigation
     const { navigation, route } = (props)
